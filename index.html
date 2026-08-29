@@ -57,16 +57,16 @@
             margin-bottom: 12px;
         }
 
-        /* 2 Kat Daha Büyütülmüş Devasa Kız Görseli */
+        /* Daha da Büyütülmüş ve Aşağı Çekilmiş Kız Görseli */
         .huge-side-girl {
             position: absolute;
-            left: -780px; /* Büyüyen gövdeyi sola doğru dengelemek için */
+            left: -880px; 
             top: 50%;
-            transform: translateY(-50%);
-            width: 1350px; /* Yaklaşık 2 katına çıkarıldı */
-            max-height: 1600px;
+            transform: translateY(-38%); /* Biraz daha aşağı çekildi */
+            width: 1550px; /* Daha da büyütüldü */
+            max-height: 1850px;
             object-fit: contain;
-            opacity: 0.8; /* Belirgin ve net */
+            opacity: 0.82;
             z-index: 1;
             pointer-events: none;
             filter: drop-shadow(0 0 35px rgba(0, 0, 0, 0.98)) drop-shadow(0 0 20px rgba(185, 28, 28, 0.45));
@@ -198,16 +198,16 @@
 
         @media (max-width: 1400px) {
             .huge-side-girl {
-                left: -500px;
-                width: 950px;
+                left: -600px;
+                width: 1150px;
                 opacity: 0.65;
             }
         }
 
         @media (max-width: 1024px) {
             .huge-side-girl {
-                left: -300px;
-                width: 650px;
+                left: -350px;
+                width: 750px;
                 opacity: 0.45;
             }
         }
