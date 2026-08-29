@@ -3,82 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giriş Oynatıcı</title>
+    <title>Wednesday - Video Oynatıcı</title>
+    <!-- Gotik Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
-            background-color: #0b0c10;
-            color: #c5c6c7;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            /* Gotik atmosferik koyu arka plan */
+            background: radial-gradient(circle at center, rgba(15, 12, 29, 0.75), rgba(0, 0, 0, 0.95)),
+                        url('https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
+            color: #e0e0e0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
             padding: 20px;
+            position: relative;
         }
+
+        /* Gotik Başlık */
+        .title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 2.4rem;
+            color: #f1f1f1;
+            text-shadow: 0 0 15px rgba(168, 85, 247, 0.6), 0 0 30px rgba(0, 0, 0, 0.9);
+            margin-bottom: 25px;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        /* Transparan Cam Efektli Player Konteyneri */
         .player-container {
             width: 100%;
-            max-width: 960px;
-            background: #1f2833;
-            border-radius: 12px;
+            max-width: 950px;
+            background: rgba(18, 18, 24, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            border: 1px solid #303c4c;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 20px rgba(147, 51, 234, 0.15);
         }
+
         .video-wrapper {
             position: relative;
             width: 100%;
             background: #000;
         }
+
         video {
             width: 100%;
             display: block;
             outline: none;
         }
-        .header {
-            padding: 15px 20px;
+
+        .footer-info {
+            padding: 14px 20px;
+            background: rgba(10, 10, 15, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #121820;
-            border-bottom: 1px solid #303c4c;
+            font-size: 0.9rem;
+            color: #a1a1aa;
         }
-        .header h1 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #66fcf1;
-            letter-spacing: 0.5px;
+
+        .footer-info span.badge {
+            background: rgba(147, 51, 234, 0.2);
+            color: #c084fc;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(147, 51, 234, 0.3);
         }
     </style>
 </head>
 <body>
 
+    <h1 class="title">WEDNESDAY</h1>
+
     <div class="player-container">
-        <div class="header">
-            <h1>Wednesday - Giriş</h1>
-        </div>
         <div class="video-wrapper">
             <video id="introVideo" controls autoplay playsinline preload="auto">
                 <source src="https://archive.org/download/wegiris-1/wegiris%20%281%29.mp4" type="video/mp4">
                 Tarayıcınız video etiketini desteklemiyor.
             </video>
         </div>
+        <div class="footer-info">
+            <span>Giriş Bölümü</span>
+            <span class="badge">Otomatik Oynatma</span>
+        </div>
     </div>
 
     <script>
         const video = document.getElementById('introVideo');
 
-        // Sayfa yüklendiğinde otomatik oynatmayı başlatır (1 kez çalar, döngü/loop yoktur)
+        // Sayfa açıldığında 1 kez otomatik başlatma mantığı
         window.addEventListener('DOMContentLoaded', () => {
             const playPromise = video.play();
             if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    // Tarayıcı otomatik sesli oynatmayı engellediyse sessiz başlatmayı dener
+                playPromise.catch(() => {
+                    // Tarayıcı otomatik sesli başlatmayı engellerse sessiz başlatır
                     video.muted = true;
                     video.play();
                 });
