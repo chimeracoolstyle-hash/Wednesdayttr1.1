@@ -25,22 +25,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 60px 15px 40px; /* Başlığı aşağı almak için üst padding artırıldı */
+            padding: 30px 15px 30px;
         }
         
-        /* WEDNESDAY Başlığı - Biraz aşağı çekildi */
+        /* WEDNESDAY Başlığı */
         h1 {
             font-family: 'Cinzel Decorative', cursive;
-            font-size: 4rem;
+            font-size: 3.8rem;
             color: #f3f4f6;
             text-shadow: 0 0 20px rgba(185, 28, 28, 0.7), 0 0 40px rgba(0, 0, 0, 0.95);
-            margin-top: 15px;
-            margin-bottom: 30px;
+            margin-top: 5px;
+            margin-bottom: 18px; /* Başlık ile player arası daraltıldı */
             letter-spacing: 6px;
             text-align: center;
         }
 
-        /* Player Kutusu */
+        /* Player Kutusu - Yukarı Çekildi */
         .main-container {
             width: 100%;
             max-width: 950px;
@@ -51,7 +51,7 @@
             border-radius: 14px;
             overflow: hidden;
             box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.9), 0 0 25px rgba(153, 27, 27, 0.25);
-            margin-bottom: 20px; /* Butonları yukarı çekmek için boşluk daraltıldı */
+            margin-bottom: 12px; /* Butonlara doğru yukarı yaklaştırıldı */
         }
 
         .video-box {
@@ -64,22 +64,22 @@
             display: block;
         }
 
-        /* Sezon Butonları - Yukarı yaklaştırıldı */
+        /* Sezon Butonları - Yukarı Çekildi */
         .season-buttons {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             width: 100%;
             max-width: 950px;
             justify-content: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         /* Koyu Kırmızı / Kan Lekeli Buton Tasarımı */
         .blood-btn {
             position: relative;
             flex: 1;
-            padding: 16px 20px;
-            font-size: 1.2rem;
+            padding: 14px 18px;
+            font-size: 1.15rem;
             font-weight: 700;
             letter-spacing: 2px;
             color: #fce7f3;
@@ -112,20 +112,20 @@
             box-shadow: 0 0 30px rgba(239, 68, 68, 0.8), inset 0 0 15px rgba(0, 0, 0, 0.8);
         }
 
-        /* Bölüm Butonları Alanı - Sayfanın kaymasını önlemek için sabit yer tutucu */
+        /* Bölüm Butonları Alanı */
         .episodes-wrapper {
             width: 100%;
             max-width: 950px;
-            min-height: 140px; /* Butonlar açıldığında sayfanın oynamasını engeller */
+            min-height: 130px;
         }
 
         .episodes-container {
             width: 100%;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            gap: 10px;
             background: rgba(15, 15, 20, 0.6);
-            padding: 20px;
+            padding: 16px;
             border-radius: 12px;
             border: 1px solid rgba(185, 28, 28, 0.25);
             backdrop-filter: blur(10px);
@@ -140,8 +140,8 @@
         }
 
         .episode-btn {
-            padding: 12px 10px;
-            font-size: 0.9rem;
+            padding: 11px 8px;
+            font-size: 0.88rem;
             font-weight: 600;
             color: #fecaca;
             background: linear-gradient(145deg, rgba(69, 10, 10, 0.85), rgba(20, 5, 5, 0.95));
@@ -161,10 +161,10 @@
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; margin-bottom: 20px; }
+            h1 { font-size: 2.3rem; margin-bottom: 15px; }
             .season-buttons { flex-direction: column; }
             .episodes-container { grid-template-columns: repeat(2, 1fr); }
-            .episodes-wrapper { min-height: 240px; }
+            .episodes-wrapper { min-height: 220px; }
         }
     </style>
 </head>
