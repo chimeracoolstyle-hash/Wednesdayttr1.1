@@ -83,7 +83,6 @@
             letter-spacing: 2px;
             color: #fce7f3;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
-            /* Kan damlaları/lekeleri efekti veren radyal ve lineer katman */
             background-color: #450a0a;
             background-image: 
                 radial-gradient(circle at 15% 25%, rgba(220, 38, 38, 0.8) 0%, transparent 22%),
@@ -189,18 +188,30 @@
         const btnSeason1 = document.getElementById('btnSeason1');
         const btnSeason2 = document.getElementById('btnSeason2');
 
-        // Otomatik Oynatma Mantığı
+        // Sesi açık olarak başlatma
+        video.muted = false;
+        video.volume = 1.0;
+
         window.addEventListener('DOMContentLoaded', () => {
             const playPromise = video.play();
             if (playPromise !== undefined) {
                 playPromise.catch(() => {
+                    // Otomatik ses engellenirse sessiz başlatıp ilk etkileşimde sesi açar
                     video.muted = true;
                     video.play();
+                    
+                    const enableAudio = () => {
+                        video.muted = false;
+                        document.removeEventListener('click', enableAudio);
+                        document.removeEventListener('touchstart', enableAudio);
+                    };
+                    document.addEventListener('click', enableAudio);
+                    document.addEventListener('touchstart', enableAudio);
                 });
             }
         });
 
-        // Sezon Tıklama Fonksiyonu
+        // Sezon Butonları
         function openSeason(seasonNumber) {
             btnSeason1.classList.toggle('active', seasonNumber === 1);
             btnSeason2.classList.toggle('active', seasonNumber === 2);
@@ -217,14 +228,8 @@
             }
         }
 
-        // Bölüm Oynatma Fonksiyonu (İleride video linklerinizi buraya tanımlayabilirsiniz)
         function playEpisode(season, episode) {
             console.log(`Sezon ${season}, Bölüm ${episode} seçildi.`);
-            /* Örnek link değişimi:
-               source.src = "https://archive.org/.../sezon" + season + "_bolum" + episode + ".mp4";
-               video.load();
-               video.play();
-            */
         }
     </script>
 </body>
