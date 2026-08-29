@@ -46,7 +46,7 @@
             z-index: 3;
         }
 
-        /* Player Taşıyıcı Alanı (Orijinal Merkez Konumu) */
+        /* Player Taşıyıcı Alanı */
         .stage-wrapper {
             position: relative;
             width: 100%;
@@ -57,28 +57,28 @@
             margin-bottom: 12px;
         }
 
-        /* 2 Kat Büyütülmüş Sol Kız Resmi (Player'ın Altında/Arkasında Kalan Katman) */
+        /* Sola Kaydırılmış, Yarısından Fazlası Görünen Kız Görseli */
         .huge-side-girl {
             position: absolute;
-            left: -220px; /* Player'ın sol arkasına uzanır */
+            left: -480px; /* Belirgin şekilde sola kaydırıldı */
             top: 50%;
             transform: translateY(-50%);
-            width: 650px; /* 2 katına çıkarıldı */
-            max-height: 900px;
+            width: 720px;
+            max-height: 950px;
             object-fit: contain;
-            opacity: 0.65;
-            z-index: 1; /* Player'ın altında kalması için */
+            opacity: 0.75; /* Daha net ve belirgin */
+            z-index: 1;
             pointer-events: none;
             filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 15px rgba(185, 28, 28, 0.4));
-            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
         }
 
-        /* Player Kutusu (Orijinal Boyut ve Üst Katman) */
+        /* Player Kutusu */
         .main-container {
             width: 100%;
             position: relative;
-            z-index: 2; /* Kız resminin üstünde durur */
+            z-index: 2;
             background: rgba(15, 15, 20, 0.82);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -196,11 +196,19 @@
             transform: scale(1.02);
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 1400px) {
             .huge-side-girl {
-                left: -120px;
-                width: 500px;
-                opacity: 0.45;
+                left: -320px;
+                width: 580px;
+                opacity: 0.6;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .huge-side-girl {
+                left: -200px;
+                width: 450px;
+                opacity: 0.4;
             }
         }
 
