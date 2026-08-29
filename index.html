@@ -285,7 +285,8 @@
     </div>
 
     <script>
-        const INTRO_VIDEO_URL = "https://archive.org/download/wegiris-1/wegiris%20%281%29.mp4";
+        // Giriş videosu doğrudan repodaki giris.dat dosyasından okunuyor
+        const INTRO_FILE_URL = "giris.dat";
 
         // BÖLÜM VİDEO LİNKLERİ LİSTESİ
         const episodesData = {
@@ -304,35 +305,47 @@
 
         let hls = null;
 
-        // Video Yükleme ve Oynatma Fonksiyonu (MP4 ve M3U8 desteği ile)
-        function loadVideoSource(url) {
+        // .dat dosyasını tarayıcı hafızasına (Blob) alıp IDM'den gizleyerek oynatan fonksiyon
+        function playBlobIntro(fileUrl) {
             if (hls) {
                 hls.destroy();
                 hls = null;
             }
 
-            if (url.includes('.m3u8')) {
-                if (Hls.isSupported()) {
-                    hls = new Hls();
-                    hls.loadSource(url);
-                    hls.attachMedia(video);
-                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                        video.play().catch(() => {});
-                    });
-                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                    video.src = url;
+            fetch(fileUrl)
+                .then(res => res.arrayBuffer())
+                .then(buffer => {
+                    const blob = new Blob([buffer], { type: 'video/mp4' });
+                    const blobUrl = URL.createObjectURL(blob);
+                    video.src = blobUrl;
                     video.play().catch(() => {});
-                }
-            } else {
+                })
+                .catch(err => console.error("Video okunamadı:", err));
+        }
+
+        // HLS (.m3u8) Bölüm Oynatma Fonksiyonu
+        function loadHlsVideo(url) {
+            if (hls) {
+                hls.destroy();
+                hls = null;
+            }
+
+            if (Hls.isSupported()) {
+                hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    video.play().catch(() => {});
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = url;
-                video.load();
                 video.play().catch(() => {});
             }
         }
 
-        // Açılış videosu
+        // Sayfa açıldığında Blob formatında giriş videosunu başlat
         window.addEventListener('DOMContentLoaded', () => {
-            loadVideoSource(INTRO_VIDEO_URL);
+            playBlobIntro(INTRO_FILE_URL);
         });
 
         // Sezon Butonları
@@ -357,16 +370,14 @@
             const key = `${season}_${episode}`;
             const videoUrl = episodesData[key];
 
-            // Başlığı güncelle
             mainTitle.innerText = `${season}. SEZON ${episode}. BÖLÜM`;
 
-            // Butonları gizle, GERİ butonunu göster
             seasonButtonsArea.style.display = 'none';
             episodesWrapper.style.display = 'none';
             backButtonArea.style.display = 'flex';
 
             if (videoUrl) {
-                loadVideoSource(videoUrl);
+                loadHlsVideo(videoUrl);
             } else {
                 alert(`${season}. Sezon ${episode}. Bölüm videosu henüz eklenmedi.`);
             }
@@ -374,16 +385,13 @@
 
         // Ana Sayfaya Geri Dön Fonksiyonu
         function goBackToHome() {
-            // Başlığı eski haline getir
             mainTitle.innerText = "WEDNESDAY";
 
-            // Sezon ve bölüm butonlarını geri getir, GERİ butonunu gizle
             seasonButtonsArea.style.display = 'flex';
             episodesWrapper.style.display = 'block';
             backButtonArea.style.display = 'none';
 
-            // Giriş videosunu tekrar başlat
-            loadVideoSource(INTRO_VIDEO_URL);
+            playBlobIntro(INTRO_FILE_URL);
         }
     </script>
 </body>
