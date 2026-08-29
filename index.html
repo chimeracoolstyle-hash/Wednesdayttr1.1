@@ -16,31 +16,6 @@
       background-color: #0b0c10;
       color: #ffffff;
       min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Üst Yarım Arka Plan Görseli */
-    .hero-backdrop {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 480px;
-      background-image: url('aaa26-08-29%20041209.png');
-      background-size: cover;
-      background-position: center top;
-      background-repeat: no-repeat;
-      z-index: 0;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%);
-      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 45%, rgba(0,0,0,0) 100%);
-      opacity: 0.85;
-    }
-
-    /* Sayfa İçerik Alanı */
-    .content-wrapper {
-      position: relative;
-      z-index: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -49,9 +24,7 @@
 
     header {
       text-align: center;
-      margin-top: 15px;
       margin-bottom: 25px;
-      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
     }
 
     h1 {
@@ -60,6 +33,7 @@
       letter-spacing: 2px;
       margin-bottom: 4px;
       text-transform: uppercase;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
     }
 
     p.subtitle {
@@ -68,15 +42,41 @@
       font-weight: 500;
     }
 
-    /* Video Oynatıcı Alanı */
-    .player-container {
+    /* Ana Düzen (Sol Resim + Sağ Oynatıcı) */
+    .media-container {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
       width: 100%;
-      max-width: 960px;
+      max-width: 1100px;
+      align-items: stretch;
+    }
+
+    /* Sol Taraf: Küçültülmüş Afiş Kutusu */
+    .poster-box {
+      flex: 0 0 240px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
+      border: 1px solid #232738;
+      background-color: #12141c;
+    }
+
+    .poster-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Sağ Taraf: Video Oynatıcı */
+    .player-box {
+      flex: 1;
       aspect-ratio: 16 / 9;
       background-color: #000000;
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
       border: 1px solid #232738;
     }
 
@@ -90,7 +90,7 @@
     /* Bölüm Seçim Butonları */
     .episodes-section {
       width: 100%;
-      max-width: 960px;
+      max-width: 1100px;
       margin-top: 35px;
     }
 
@@ -133,56 +133,61 @@
       border-color: #e50914;
       box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
     }
+
+    /* Mobil Cihazlar İçin Uyum (Telefonda alt alta geçer) */
+    @media (max-width: 768px) {
+      .media-container {
+        flex-direction: column-reverse;
+      }
+      .poster-box {
+        max-height: 240px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Üst Arka Plan Banner -->
-  <div class="hero-backdrop"></div>
+  <header>
+    <h1>Wednesday</h1>
+    <p class="subtitle" id="current-ep-title">1. Sezon 1. Bölüm</p>
+  </header>
 
-  <!-- Ana İçerik -->
-  <div class="content-wrapper">
-    <header>
-      <h1>Wednesday</h1>
-      <p class="subtitle" id="current-ep-title">1. Sezon 1. Bölüm</p>
-    </header>
+  <div class="media-container">
+    
+    <div class="poster-box">
+      <img src="aaa26-08-29%20041209.png" alt="Wednesday" />
+    </div>
 
-    <!-- Standart HTML5 Video Oynatıcı -->
-    <div class="player-container">
+    <div class="player-box">
       <video id="main-player" playsinline controls preload="metadata">
         <source id="video-source" src="https://github.com/chimeracoolstyle-hash/Wednesdayttr1.1/releases/download/v1.0/Wednesday.1.Sezon.1.Bolum.izle.coolstylerip.mp4" type="video/mp4" />
         Tarayıcınız video etiketini desteklemiyor.
       </video>
     </div>
 
-    <!-- Bölüm Listesi -->
-    <div class="episodes-section">
-      <div class="episodes-title">Bölümler</div>
-      <div class="episodes-grid">
-        <button class="ep-btn active" onclick="changeEpisode('https://github.com/chimeracoolstyle-hash/Wednesdayttr1.1/releases/download/v1.0/Wednesday.1.Sezon.1.Bolum.izle.coolstylerip.mp4', '1. Sezon 1. Bölüm', this)">1. Bölüm</button>
-        <button class="ep-btn" onclick="changeEpisode('BURAYA_2_BOLUM_LINKI', '1. Sezon 2. Bölüm', this)">2. Bölüm</button>
-        <button class="ep-btn" onclick="changeEpisode('BURAYA_3_BOLUM_LINKI', '1. Sezon 3. Bölüm', this)">3. Bölüm</button>
-        <button class="ep-btn" onclick="changeEpisode('BURAYA_4_BOLUM_LINKI', '1. Sezon 4. Bölüm', this)">4. Bölüm</button>
-        <button class="ep-btn" onclick="changeEpisode('BURAYA_5_BOLUM_LINKI', '1. Sezon 5. Bölüm', this)">5. Bölüm</button>
-      </div>
+  </div>
+
+  <div class="episodes-section">
+    <div class="episodes-title">Bölümler</div>
+    <div class="episodes-grid">
+      <button class="ep-btn active" onclick="changeEpisode('https://github.com/chimeracoolstyle-hash/Wednesdayttr1.1/releases/download/v1.0/Wednesday.1.Sezon.1.Bolum.izle.coolstylerip.mp4', '1. Sezon 1. Bölüm', this)">1. Bölüm</button>
+      <button class="ep-btn" onclick="changeEpisode('BURAYA_2_BOLUM_LINKI', '1. Sezon 2. Bölüm', this)">2. Bölüm</button>
+      <button class="ep-btn" onclick="changeEpisode('BURAYA_3_BOLUM_LINKI', '1. Sezon 3. Bölüm', this)">3. Bölüm</button>
+      <button class="ep-btn" onclick="changeEpisode('BURAYA_4_BOLUM_LINKI', '1. Sezon 4. Bölüm', this)">4. Bölüm</button>
+      <button class="ep-btn" onclick="changeEpisode('BURAYA_5_BOLUM_LINKI', '1. Sezon 5. Bölüm', this)">5. Bölüm</button>
     </div>
   </div>
 
-  <!-- Video Değiştirme Mantığı -->
   <script>
     function changeEpisode(videoUrl, episodeTitle, buttonElement) {
       const player = document.getElementById('main-player');
       const source = document.getElementById('video-source');
       
-      // Video kaynağını değiştir ve oynat
       source.src = videoUrl;
       player.load();
       player.play();
       
-      // Başlığı güncelle
       document.getElementById('current-ep-title').textContent = episodeTitle;
-      
-      // Buton vurgusunu aktif butona taşı
       const allButtons = document.querySelectorAll('.ep-btn');
       allButtons.forEach(btn => btn.classList.remove('active'));
       buttonElement.classList.add('active');
