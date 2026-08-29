@@ -26,7 +26,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 15px 50px 15px;
+      padding: 15px 15px 50px 15px;
     }
 
     /* Sol Taraftaki Şeffaf Görsel (Wednesday) */
@@ -91,35 +91,26 @@
       margin-bottom: 20px;
     }
 
-    /* Büyütülmüş, Gotik Şekilli ve Transparan Başlık */
+    /* Daha Büyük, Şekilli ve Daha Transparan Başlık */
     h1.main-title {
       font-family: 'Cinzel Decorative', serif;
-      font-size: 3.4rem;           /* Daha büyük boyut */
+      font-size: 4.2rem;               /* Daha büyük boyut */
       font-weight: 900;
-      color: rgba(229, 9, 20, 0.88); /* Az transparan kırmızı ton */
-      letter-spacing: 6px;         /* Geniş ve şekilli harf aralığı */
+      color: rgba(229, 9, 20, 0.65);   /* Belirgin şekilde daha transparan kırmızı */
+      letter-spacing: 8px;             /* Genişletilmiş harf aralığı */
       text-transform: uppercase;
-      /* Gotik kırmızı neon gölge efekti */
-      text-shadow: 0 0 20px rgba(229, 9, 20, 0.45), 
-                   0 0 40px rgba(229, 9, 20, 0.2), 
+      /* Hafif ve yumuşak gotik neon gölge efekti */
+      text-shadow: 0 0 25px rgba(229, 9, 20, 0.35), 
+                   0 0 50px rgba(229, 9, 20, 0.15), 
                    0 4px 15px rgba(0, 0, 0, 0.9);
-      margin-bottom: 4px;
+      margin: 0;
       transition: all 0.3s ease;
     }
 
     h1.main-title:hover {
-      color: rgba(255, 30, 40, 0.95);
-      text-shadow: 0 0 25px rgba(229, 9, 20, 0.7), 
-                   0 0 50px rgba(229, 9, 20, 0.4);
-    }
-
-    p.subtitle {
-      font-size: 1rem;
-      color: #cfd3dc;
-      font-weight: 500;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      opacity: 0.85;
+      color: rgba(229, 9, 20, 0.85);
+      text-shadow: 0 0 30px rgba(229, 9, 20, 0.6), 
+                   0 0 60px rgba(229, 9, 20, 0.3);
     }
 
     /* Video Oynatıcı */
@@ -189,8 +180,8 @@
 
     @media (max-width: 600px) {
       h1.main-title {
-        font-size: 2.2rem;
-        letter-spacing: 3px;
+        font-size: 2.4rem;
+        letter-spacing: 4px;
       }
     }
   </style>
@@ -203,7 +194,6 @@
   <div class="content-wrapper">
     <header>
       <h1 class="main-title">Wednesday</h1>
-      <p class="subtitle" id="current-ep-title">1. Sezon 1. Bölüm</p>
     </header>
 
     <div class="player-container">
@@ -216,17 +206,17 @@
     <div class="episodes-section">
       <div class="episodes-title">Bölümler</div>
       <div class="episodes-grid">
-        <button class="ep-btn active" onclick="changeEpisode('https://ia600105.us.archive.org/6/items/ww_20260829/ww.mp4', '1. Sezon 1. Bölüm', this)">1. Bölüm</button>
-        <button class="ep-btn" onclick="changeEpisode('BURAYA_2_BOLUM_LINKI', '1. Sezon 2. Bölüm', this)">2. Bölüm</button>
-        <button class="ep-btn" onclick="changeEpisode('BURAYA_3_BOLUM_LINKI', '1. Sezon 3. Bölüm', this)">3. Bölüm</button>
-        <button class="ep-btn" onclick="changeEpisode('BURAYA_4_BOLUM_LINKI', '1. Sezon 4. Bölüm', this)">4. Bölüm</button>
-        <button class="ep-btn" onclick="changeEpisode('BURAYA_5_BOLUM_LINKI', '1. Sezon 5. Bölüm', this)">5. Bölüm</button>
+        <button class="ep-btn active" onclick="changeEpisode('https://ia600105.us.archive.org/6/items/ww_20260829/ww.mp4', this)">1. Bölüm</button>
+        <button class="ep-btn" onclick="changeEpisode('BURAYA_2_BOLUM_LINKI', this)">2. Bölüm</button>
+        <button class="ep-btn" onclick="changeEpisode('BURAYA_3_BOLUM_LINKI', this)">3. Bölüm</button>
+        <button class="ep-btn" onclick="changeEpisode('BURAYA_4_BOLUM_LINKI', this)">4. Bölüm</button>
+        <button class="ep-btn" onclick="changeEpisode('BURAYA_5_BOLUM_LINKI', this)">5. Bölüm</button>
       </div>
     </div>
   </div>
 
   <script>
-    function changeEpisode(videoUrl, episodeTitle, buttonElement) {
+    function changeEpisode(videoUrl, buttonElement) {
       const player = document.getElementById('main-player');
       const source = document.getElementById('video-source');
       
@@ -234,7 +224,6 @@
       player.load();
       player.play();
       
-      document.getElementById('current-ep-title').textContent = episodeTitle;
       const allButtons = document.querySelectorAll('.ep-btn');
       allButtons.forEach(btn => btn.classList.remove('active'));
       buttonElement.classList.add('active');
