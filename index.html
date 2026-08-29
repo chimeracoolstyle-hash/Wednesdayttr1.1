@@ -14,10 +14,14 @@
 
         body {
             background-color: #070709;
-            background-image: radial-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.95)), url('el.png');
-            background-position: center;
+            /* El resmini daha net ve sağa doğru belirgin gösteren katman */
+            background-image: 
+                radial-gradient(circle at 85% 50%, rgba(0, 0, 0, 0.15) 0%, rgba(7, 7, 9, 0.85) 75%),
+                linear-gradient(to right, rgba(7, 7, 9, 0.9) 0%, rgba(7, 7, 9, 0.4) 60%, rgba(7, 7, 9, 0.2) 100%),
+                url('el.png');
+            background-position: right 5% center; /* Sağ tarafa kaydırıldı */
             background-repeat: no-repeat;
-            background-size: cover;
+            background-size: contain; /* Resmin kesilmeden net görünmesi için */
             background-attachment: fixed;
             color: #fff;
             font-family: 'Montserrat', sans-serif;
@@ -35,12 +39,12 @@
             color: #f3f4f6;
             text-shadow: 0 0 20px rgba(185, 28, 28, 0.7), 0 0 40px rgba(0, 0, 0, 0.95);
             margin-top: 5px;
-            margin-bottom: 18px; /* Başlık ile player arası daraltıldı */
+            margin-bottom: 18px;
             letter-spacing: 6px;
             text-align: center;
         }
 
-        /* Player Kutusu - Yukarı Çekildi */
+        /* Player Kutusu */
         .main-container {
             width: 100%;
             max-width: 950px;
@@ -51,7 +55,7 @@
             border-radius: 14px;
             overflow: hidden;
             box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.9), 0 0 25px rgba(153, 27, 27, 0.25);
-            margin-bottom: 12px; /* Butonlara doğru yukarı yaklaştırıldı */
+            margin-bottom: 12px;
         }
 
         .video-box {
@@ -64,7 +68,7 @@
             display: block;
         }
 
-        /* Sezon Butonları - Yukarı Çekildi */
+        /* Sezon Butonları */
         .season-buttons {
             display: flex;
             gap: 15px;
@@ -161,6 +165,10 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                background-position: center bottom;
+                background-size: 60%;
+            }
             h1 { font-size: 2.3rem; margin-bottom: 15px; }
             .season-buttons { flex-direction: column; }
             .episodes-container { grid-template-columns: repeat(2, 1fr); }
