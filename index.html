@@ -14,11 +14,12 @@
 
         body {
             background-color: #070709;
+            /* Arka plan el görseli biraz daha aşağı kaydırıldı (62%) */
             background-image: 
-                radial-gradient(circle at 85% 50%, rgba(0, 0, 0, 0.15) 0%, rgba(7, 7, 9, 0.85) 75%),
+                radial-gradient(circle at 85% 62%, rgba(0, 0, 0, 0.15) 0%, rgba(7, 7, 9, 0.85) 75%),
                 linear-gradient(to right, rgba(7, 7, 9, 0.9) 0%, rgba(7, 7, 9, 0.4) 60%, rgba(7, 7, 9, 0.2) 100%),
                 url('el.png');
-            background-position: right 5% center;
+            background-position: right 5% 62%;
             background-repeat: no-repeat;
             background-size: contain;
             background-attachment: fixed;
@@ -57,13 +58,13 @@
             margin-bottom: 12px;
         }
 
-        /* Daha da Büyütülmüş ve Aşağı Çekilmiş Kız Görseli */
+        /* Sol Kız Görseli */
         .huge-side-girl {
             position: absolute;
             left: -880px; 
             top: 50%;
-            transform: translateY(-38%); /* Biraz daha aşağı çekildi */
-            width: 1550px; /* Daha da büyütüldü */
+            transform: translateY(-38%);
+            width: 1550px;
             max-height: 1850px;
             object-fit: contain;
             opacity: 0.82;
