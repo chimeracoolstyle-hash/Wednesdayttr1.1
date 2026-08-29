@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wednesday</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
-            background-color: #0d0d11;
-            background-image: radial-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.9)), url('el.png');
+            background-color: #070709;
+            background-image: radial-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.95)), url('el.png');
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -24,31 +25,31 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 15px;
+            padding: 40px 15px 60px;
         }
         
-        /* WEDNESDAY Başlığı - Büyütüldü */
+        /* WEDNESDAY Başlığı */
         h1 {
             font-family: 'Cinzel Decorative', cursive;
             font-size: 4rem;
             color: #f3f4f6;
-            text-shadow: 0 0 20px rgba(168, 85, 247, 0.7), 0 0 40px rgba(0, 0, 0, 0.9);
-            margin-bottom: 50px;
+            text-shadow: 0 0 20px rgba(185, 28, 28, 0.7), 0 0 40px rgba(0, 0, 0, 0.95);
+            margin-bottom: 45px;
             letter-spacing: 6px;
             text-align: center;
         }
 
-        /* Player Kutusu - Aşağı Kaydırıldı */
+        /* Player Kutusu */
         .main-container {
             width: 100%;
             max-width: 950px;
-            background: rgba(20, 20, 28, 0.75);
+            background: rgba(15, 15, 20, 0.8);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.8), 0 0 25px rgba(147, 51, 234, 0.2);
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.9), 0 0 25px rgba(153, 27, 27, 0.25);
             margin-bottom: 35px;
         }
 
@@ -62,50 +63,100 @@
             display: block;
         }
 
-        /* Sezon Butonları Alanı */
+        /* Sezon Butonları */
         .season-buttons {
             display: flex;
             gap: 20px;
             width: 100%;
             max-width: 950px;
             justify-content: center;
+            margin-bottom: 30px;
         }
 
-        .season-btn {
+        /* Koyu Kırmızı / Kan Lekeli Buton Tasarımı */
+        .blood-btn {
+            position: relative;
             flex: 1;
             padding: 18px 24px;
             font-size: 1.25rem;
             font-weight: 700;
             letter-spacing: 2px;
-            color: #f3f4f6;
-            background: linear-gradient(135deg, rgba(88, 28, 135, 0.8), rgba(30, 27, 75, 0.9));
-            border: 1px solid rgba(168, 85, 247, 0.4);
+            color: #fce7f3;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+            /* Kan damlaları/lekeleri efekti veren radyal ve lineer katman */
+            background-color: #450a0a;
+            background-image: 
+                radial-gradient(circle at 15% 25%, rgba(220, 38, 38, 0.8) 0%, transparent 22%),
+                radial-gradient(circle at 85% 75%, rgba(185, 28, 28, 0.9) 0%, transparent 28%),
+                radial-gradient(ellipse at 50% 120%, rgba(127, 29, 29, 1) 0%, rgba(69, 10, 10, 0.9) 70%),
+                linear-gradient(180deg, rgba(136, 19, 19, 0.9) 0%, rgba(40, 5, 5, 0.95) 100%);
+            border: 1px solid rgba(239, 68, 68, 0.4);
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 0, 0, 0.6);
             text-transform: uppercase;
+            overflow: hidden;
         }
 
-        .season-btn:hover {
-            background: linear-gradient(135deg, rgba(126, 34, 206, 0.9), rgba(59, 7, 100, 1));
-            border-color: rgba(192, 132, 252, 0.8);
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+        .blood-btn:hover {
+            border-color: rgba(248, 113, 113, 0.8);
+            box-shadow: 0 0 25px rgba(220, 38, 38, 0.6), inset 0 0 10px rgba(185, 28, 28, 0.5);
             transform: translateY(-2px);
+            color: #fff;
         }
 
-        .season-btn:active {
-            transform: translateY(0);
+        .blood-btn.active {
+            border-color: #ef4444;
+            background-color: #7f1d1d;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.8), inset 0 0 15px rgba(0, 0, 0, 0.8);
         }
 
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2.5rem;
-                margin-bottom: 30px;
-            }
-            .season-buttons {
-                flex-direction: column;
-            }
+        /* Bölüm Butonları Izgarası */
+        .episodes-container {
+            width: 100%;
+            max-width: 950px;
+            display: none;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            background: rgba(15, 15, 20, 0.6);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(185, 28, 28, 0.25);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .episode-btn {
+            padding: 14px 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fecaca;
+            background: linear-gradient(145deg, rgba(69, 10, 10, 0.85), rgba(20, 5, 5, 0.95));
+            border: 1px solid rgba(220, 38, 38, 0.35);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+
+        .episode-btn:hover {
+            background: linear-gradient(145deg, rgba(153, 27, 27, 0.95), rgba(69, 10, 10, 1));
+            border-color: #f87171;
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
+            color: #fff;
+            transform: scale(1.03);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; margin-bottom: 25px; }
+            .season-buttons { flex-direction: column; }
+            .episodes-container { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -116,20 +167,29 @@
     <div class="main-container">
         <div class="video-box">
             <video id="player" controls autoplay playsinline preload="auto">
-                <source src="https://archive.org/download/wegiris-1/wegiris%20%281%29.mp4" type="video/mp4">
+                <source id="videoSource" src="https://archive.org/download/wegiris-1/wegiris%20%281%29.mp4" type="video/mp4">
                 Tarayıcınız video etiketini desteklemiyor.
             </video>
         </div>
     </div>
 
+    <!-- Sezon Seçim Butonları -->
     <div class="season-buttons">
-        <button class="season-btn" onclick="selectSeason(1)">1. SEZON</button>
-        <button class="season-btn" onclick="selectSeason(2)">2. SEZON</button>
+        <button id="btnSeason1" class="blood-btn" onclick="openSeason(1)">1. SEZON</button>
+        <button id="btnSeason2" class="blood-btn" onclick="openSeason(2)">2. SEZON</button>
     </div>
+
+    <!-- Dinamik Bölüm Butonları Alanı -->
+    <div id="episodesContainer" class="episodes-container"></div>
 
     <script>
         const video = document.getElementById('player');
+        const source = document.getElementById('videoSource');
+        const episodesContainer = document.getElementById('episodesContainer');
+        const btnSeason1 = document.getElementById('btnSeason1');
+        const btnSeason2 = document.getElementById('btnSeason2');
 
+        // Otomatik Oynatma Mantığı
         window.addEventListener('DOMContentLoaded', () => {
             const playPromise = video.play();
             if (playPromise !== undefined) {
@@ -140,9 +200,31 @@
             }
         });
 
-        function selectSeason(seasonNumber) {
-            console.log(seasonNumber + ". Sezon seçildi.");
-            // İleride bölüm listesini açmak veya video değiştirmek için burayı kullanabilirsiniz
+        // Sezon Tıklama Fonksiyonu
+        function openSeason(seasonNumber) {
+            btnSeason1.classList.toggle('active', seasonNumber === 1);
+            btnSeason2.classList.toggle('active', seasonNumber === 2);
+
+            episodesContainer.innerHTML = '';
+            episodesContainer.style.display = 'grid';
+
+            for (let i = 1; i <= 8; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'episode-btn';
+                btn.innerText = `${seasonNumber}. Sezon ${i}. Bölüm`;
+                btn.onclick = () => playEpisode(seasonNumber, i);
+                episodesContainer.appendChild(btn);
+            }
+        }
+
+        // Bölüm Oynatma Fonksiyonu (İleride video linklerinizi buraya tanımlayabilirsiniz)
+        function playEpisode(season, episode) {
+            console.log(`Sezon ${season}, Bölüm ${episode} seçildi.`);
+            /* Örnek link değişimi:
+               source.src = "https://archive.org/.../sezon" + season + "_bolum" + episode + ".mp4";
+               video.load();
+               video.play();
+            */
         }
     </script>
 </body>
