@@ -14,15 +14,6 @@
 
         body {
             background-color: #070709;
-            /* Arka plan el görseli - Orijinal büyük ve aşağı çekilmiş hali */
-            background-image: 
-                radial-gradient(circle at 85% 62%, rgba(0, 0, 0, 0.15) 0%, rgba(7, 7, 9, 0.85) 75%),
-                linear-gradient(to right, rgba(7, 7, 9, 0.9) 0%, rgba(7, 7, 9, 0.4) 60%, rgba(7, 7, 9, 0.2) 100%),
-                url('el.png');
-            background-position: right 5% 62%;
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-attachment: fixed;
             color: #fff;
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
@@ -47,7 +38,7 @@
             z-index: 3;
         }
 
-        /* Player Taşıyıcı Alanı */
+        /* Player ve Arkadaki Karakterlerin Taşıyıcı Alanı */
         .stage-wrapper {
             position: relative;
             width: 100%;
@@ -58,28 +49,41 @@
             margin-bottom: 12px;
         }
 
-        /* Sol Kız Görseli */
+        /* Sol Taraftaki Kız Görseli (Player Arkası) */
         .huge-side-girl {
             position: absolute;
-            left: -880px; 
+            left: -650px; 
             top: 50%;
             transform: translateY(-38%);
-            width: 1550px;
-            max-height: 1850px;
+            width: 1300px;
+            max-height: 1600px;
             object-fit: contain;
             opacity: 0.82;
             z-index: 1;
             pointer-events: none;
             filter: drop-shadow(0 0 35px rgba(0, 0, 0, 0.98)) drop-shadow(0 0 20px rgba(185, 28, 28, 0.45));
-            mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+        }
+
+        /* Sağ Taraftaki BÜYÜK EL (Thing) Görseli (Player Arkası) */
+        .huge-side-hand {
+            position: absolute;
+            right: -380px; /* Sağ tarafa ve player arkasına doğru */
+            top: 55%;
+            transform: translateY(-40%);
+            width: 750px; /* Büyük ve net */
+            max-height: 900px;
+            object-fit: contain;
+            opacity: 0.88;
+            z-index: 1;
+            pointer-events: none;
+            filter: drop-shadow(0 0 35px rgba(0, 0, 0, 0.98)) drop-shadow(0 0 20px rgba(185, 28, 28, 0.4));
         }
 
         /* Player Kutusu */
         .main-container {
             width: 100%;
             position: relative;
-            z-index: 2;
+            z-index: 2; /* Görsellerin üstünde durur */
             background: rgba(15, 15, 20, 0.82);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
@@ -199,27 +203,31 @@
 
         @media (max-width: 1400px) {
             .huge-side-girl {
-                left: -600px;
-                width: 1150px;
-                opacity: 0.65;
+                left: -480px;
+                width: 900px;
+            }
+            .huge-side-hand {
+                right: -260px;
+                width: 550px;
             }
         }
 
         @media (max-width: 1024px) {
             .huge-side-girl {
-                left: -350px;
-                width: 750px;
-                opacity: 0.45;
+                left: -300px;
+                width: 650px;
+                opacity: 0.5;
+            }
+            .huge-side-hand {
+                right: -180px;
+                width: 400px;
+                opacity: 0.5;
             }
         }
 
         @media (max-width: 768px) {
-            .huge-side-girl {
+            .huge-side-girl, .huge-side-hand {
                 display: none;
-            }
-            body {
-                background-position: center bottom;
-                background-size: 60%;
             }
             h1 { font-size: 2.3rem; margin-bottom: 15px; }
             .season-buttons { flex-direction: column; }
@@ -232,10 +240,15 @@
 
     <h1>WEDNESDAY</h1>
 
-    <!-- Player ve Arkasındaki Devasa Kız Resmi -->
+    <!-- Player ve Arkasındaki Karakterler -->
     <div class="stage-wrapper">
+        <!-- Sol Kız Görseli -->
         <img src="aaa26-08-29 041209.png" alt="Wednesday Detay" class="huge-side-girl">
 
+        <!-- Sağ El Görseli -->
+        <img src="el.png" alt="Thing / El" class="huge-side-hand">
+
+        <!-- Video Player -->
         <div class="main-container">
             <div class="video-box">
                 <video id="player" controls autoplay playsinline preload="auto">
