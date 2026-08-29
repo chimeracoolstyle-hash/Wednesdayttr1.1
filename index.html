@@ -57,19 +57,19 @@
             margin-bottom: 12px;
         }
 
-        /* Sola Kaydırılmış, Yarısından Fazlası Görünen Kız Görseli */
+        /* 2 Kat Daha Büyütülmüş Devasa Kız Görseli */
         .huge-side-girl {
             position: absolute;
-            left: -480px; /* Belirgin şekilde sola kaydırıldı */
+            left: -780px; /* Büyüyen gövdeyi sola doğru dengelemek için */
             top: 50%;
             transform: translateY(-50%);
-            width: 720px;
-            max-height: 950px;
+            width: 1350px; /* Yaklaşık 2 katına çıkarıldı */
+            max-height: 1600px;
             object-fit: contain;
-            opacity: 0.75; /* Daha net ve belirgin */
+            opacity: 0.8; /* Belirgin ve net */
             z-index: 1;
             pointer-events: none;
-            filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 15px rgba(185, 28, 28, 0.4));
+            filter: drop-shadow(0 0 35px rgba(0, 0, 0, 0.98)) drop-shadow(0 0 20px rgba(185, 28, 28, 0.45));
             mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
             -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
         }
@@ -198,17 +198,17 @@
 
         @media (max-width: 1400px) {
             .huge-side-girl {
-                left: -320px;
-                width: 580px;
-                opacity: 0.6;
+                left: -500px;
+                width: 950px;
+                opacity: 0.65;
             }
         }
 
         @media (max-width: 1024px) {
             .huge-side-girl {
-                left: -200px;
-                width: 450px;
-                opacity: 0.4;
+                left: -300px;
+                width: 650px;
+                opacity: 0.45;
             }
         }
 
@@ -231,7 +231,7 @@
 
     <h1>WEDNESDAY</h1>
 
-    <!-- Player ve Arkasındaki Büyük Kız Resmi -->
+    <!-- Player ve Arkasındaki Devasa Kız Resmi -->
     <div class="stage-wrapper">
         <img src="aaa26-08-29 041209.png" alt="Wednesday Detay" class="huge-side-girl">
 
