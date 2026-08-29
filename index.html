@@ -47,7 +47,7 @@
       -webkit-mask-composite: destination-in;
     }
 
-    /* Sağ Taraftaki Şeffaf Görsel (el.png / Thing) */
+    /* Sağ Taraftaki Şeffaf Görsel (el.png) */
     .bg-side-right {
       position: absolute;
       top: 10px;
@@ -62,7 +62,6 @@
       opacity: 0.35;
       pointer-events: none;
       z-index: 0;
-      /* Soldan oynatıcıya ve alta doğru yumuşak erime efekti */
       mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%),
                   linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
       -webkit-mask-image: linear-gradient(to left, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%),
@@ -180,8 +179,8 @@
     </header>
 
     <div class="player-container">
-      <video id="main-player" playsinline controls preload="metadata">
-        <source id="video-source" src="https://github.com/chimeracoolstyle-hash/Wednesdayttr1.1/releases/download/v1.0/Wednesday.1.Sezon.1.Bolum.izle.coolstylerip.mp4" type="video/mp4" />
+      <video id="main-player" playsinline controls autoplay muted preload="auto">
+        <source id="video-source" src="https://ia600105.us.archive.org/6/items/ww_20260829/ww.mp4" type="video/mp4" />
         Tarayıcınız video etiketini desteklemiyor.
       </video>
     </div>
@@ -189,5 +188,31 @@
     <div class="episodes-section">
       <div class="episodes-title">Bölümler</div>
       <div class="episodes-grid">
-        <button class="ep-btn active" onclick="changeEpisode('
+        <button class="ep-btn active" onclick="changeEpisode('https://ia600105.us.archive.org/6/items/ww_20260829/ww.mp4', '1. Sezon 1. Bölüm', this)">1. Bölüm</button>
+        <button class="ep-btn" onclick="changeEpisode('BURAYA_2_BOLUM_LINKI', '1. Sezon 2. Bölüm', this)">2. Bölüm</button>
+        <button class="ep-btn" onclick="changeEpisode('BURAYA_3_BOLUM_LINKI', '1. Sezon 3. Bölüm', this)">3. Bölüm</button>
+        <button class="ep-btn" onclick="changeEpisode('BURAYA_4_BOLUM_LINKI', '1. Sezon 4. Bölüm', this)">4. Bölüm</button>
+        <button class="ep-btn" onclick="changeEpisode('BURAYA_5_BOLUM_LINKI', '1. Sezon 5. Bölüm', this)">5. Bölüm</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function changeEpisode(videoUrl, episodeTitle, buttonElement) {
+      const player = document.getElementById('main-player');
+      const source = document.getElementById('video-source');
+      
+      source.src = videoUrl;
+      player.load();
+      player.play();
+      
+      document.getElementById('current-ep-title').textContent = episodeTitle;
+      const allButtons = document.querySelectorAll('.ep-btn');
+      allButtons.forEach(btn => btn.classList.remove('active'));
+      buttonElement.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
 
