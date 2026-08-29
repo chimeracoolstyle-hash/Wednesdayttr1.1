@@ -24,23 +24,51 @@
       padding: 25px 15px 50px 15px;
     }
 
-    /* Sola Yaslı, Genişletilmiş ve Yarı Saydam (Transparan) Arka Plan Resmi */
-    .left-translucent-bg {
+    /* Sol Taraftaki Şeffaf Görsel */
+    .bg-side-left {
       position: absolute;
-      top: 0;
-      left: -80px;                 /* Sola doğru kaydırma */
-      width: 65%;                  /* Genişlik */
-      height: 600px;               /* Yükseklik */
+      top: 10px;
+      left: 0;
+      width: 45%;
+      max-width: 520px;
+      height: 620px;
       background-image: url('aaa26-08-29%20041209.png');
       background-size: cover;
-      background-position: left center;
+      background-position: center top;
       background-repeat: no-repeat;
-      opacity: 0.35;               /* Şeffaflık / Transparanlık oranı */
+      opacity: 0.35;
       pointer-events: none;
       z-index: 0;
-      /* Sağa ve aşağıya doğru yumuşak saydamlaşma efekti */
-      mask-image: radial-gradient(circle at 20% 35%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%);
-      -webkit-mask-image: radial-gradient(circle at 20% 35%, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 80%);
+      mask-image: linear-gradient(to right, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%),
+                  linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+      -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%),
+                          linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+      mask-composite: intersect;
+      -webkit-mask-composite: destination-in;
+    }
+
+    /* Sağ Taraftaki Şeffaf Görsel */
+    .bg-side-right {
+      position: absolute;
+      top: 10px;
+      right: 0;
+      width: 45%;
+      max-width: 520px;
+      height: 620px;
+      background-image: url('aaa26-08-29%20041209.png');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+      transform: scaleX(-1); /* Sağ tarafı simetrik (ayna gibi) yansıtmak isterseniz */
+      mask-image: linear-gradient(to right, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%),
+                  linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+      -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%),
+                          linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%);
+      mask-composite: intersect;
+      -webkit-mask-composite: destination-in;
     }
 
     /* Sayfa İçerik Katmanı */
@@ -142,17 +170,15 @@
 </head>
 <body>
 
-  <!-- Sola Kaydırılmış Şeffaf Arka Plan Resmi -->
-  <div class="left-translucent-bg"></div>
+  <div class="bg-side-left"></div>
+  <div class="bg-side-right"></div>
 
-  <!-- Ön Plandaki Sayfa İçeriği -->
   <div class="content-wrapper">
     <header>
       <h1>Wednesday</h1>
       <p class="subtitle" id="current-ep-title">1. Sezon 1. Bölüm</p>
     </header>
 
-    <!-- Video Oynatıcı -->
     <div class="player-container">
       <video id="main-player" playsinline controls preload="metadata">
         <source id="video-source" src="https://github.com/chimeracoolstyle-hash/Wednesdayttr1.1/releases/download/v1.0/Wednesday.1.Sezon.1.Bolum.izle.coolstylerip.mp4" type="video/mp4" />
@@ -160,7 +186,6 @@
       </video>
     </div>
 
-    <!-- Bölümler -->
     <div class="episodes-section">
       <div class="episodes-title">Bölümler</div>
       <div class="episodes-grid">
