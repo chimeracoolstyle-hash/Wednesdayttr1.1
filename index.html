@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wednesday</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <!-- HLS (.m3u8) video desteği için Hls.js -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -36,6 +38,7 @@
             letter-spacing: 6px;
             text-align: center;
             z-index: 3;
+            transition: all 0.3s ease;
         }
 
         /* Player ve Arkasındaki Karakterlerin Taşıyıcı Alanı */
@@ -64,7 +67,7 @@
             filter: drop-shadow(0 0 35px rgba(0, 0, 0, 0.98)) drop-shadow(0 0 20px rgba(185, 28, 28, 0.45));
         }
 
-        /* Sağ Taraftaki ŞEFFAFLAŞTIRILMIŞ EL (Thing) Görseli */
+        /* Sağ Taraftaki ŞEFFAFLAŞTIRILMIŞ EL Görseli */
         .huge-side-hand {
             position: absolute;
             right: -380px;
@@ -73,7 +76,7 @@
             width: 750px;
             max-height: 900px;
             object-fit: contain;
-            opacity: 0.35; /* Şeffaflık derecesi artırıldı */
+            opacity: 0.35;
             z-index: 1;
             pointer-events: none;
             filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.8));
@@ -105,8 +108,8 @@
             display: block;
         }
 
-        /* Sezon Butonları */
-        .season-buttons {
+        /* Sezon Butonları & Geri Butonu Alanı */
+        .season-buttons, .back-btn-container {
             display: flex;
             gap: 15px;
             width: 100%;
@@ -152,6 +155,12 @@
             border-color: #ef4444;
             background-color: #7f1d1d;
             box-shadow: 0 0 30px rgba(239, 68, 68, 0.8), inset 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Geri Dön Butonu */
+        .back-btn {
+            background-color: #3b0707;
+            border-color: #dc2626;
         }
 
         /* Bölüm Butonları Alanı */
@@ -240,7 +249,8 @@
 </head>
 <body>
 
-    <h1>WEDNESDAY</h1>
+    <!-- Ana Başlık -->
+    <h1 id="mainTitle">WEDNESDAY</h1>
 
     <!-- Player ve Arkasındaki Karakterler -->
     <div class="stage-wrapper">
@@ -253,52 +263,81 @@
         <!-- Video Player -->
         <div class="main-container">
             <div class="video-box">
-                <video id="player" controls autoplay playsinline preload="auto">
-                    <source id="videoSource" src="https://archive.org/download/wegiris-1/wegiris%20%281%29.mp4" type="video/mp4">
-                    Tarayıcınız video etiketini desteklemiyor.
-                </video>
+                <video id="player" controls autoplay playsinline preload="auto"></video>
             </div>
         </div>
     </div>
 
     <!-- Sezon Seçim Butonları -->
-    <div class="season-buttons">
+    <div id="seasonButtonsArea" class="season-buttons">
         <button id="btnSeason1" class="blood-btn" onclick="openSeason(1)">1. SEZON</button>
         <button id="btnSeason2" class="blood-btn" onclick="openSeason(2)">2. SEZON</button>
     </div>
 
+    <!-- Geri Dön Butonu (Bölüm Seçildiğinde Açılır) -->
+    <div id="backButtonArea" class="back-btn-container" style="display: none;">
+        <button class="blood-btn back-btn" onclick="goBackToHome()">← GERİ DÖN (ANA SAYFA)</button>
+    </div>
+
     <!-- Sabit Bölüm Alanı -->
-    <div class="episodes-wrapper">
+    <div id="episodesWrapper" class="episodes-wrapper">
         <div id="episodesContainer" class="episodes-container"></div>
     </div>
 
     <script>
+        const INTRO_VIDEO_URL = "https://archive.org/download/wegiris-1/wegiris%20%281%29.mp4";
+
+        // BÖLÜM VİDEO LİNKLERİ LİSTESİ
+        const episodesData = {
+            "1_1": "https://streaming.disk.yandex.net/hls/U2FsdGVkX1_-ZXkrVOnM3VRoybigMO9eCfO1N-tO-mRqaNKB_3W_Za3wRMogd35neB00PRiGKGcoRrF_dg3ccul8Y3NQWqyb_Ec61TntidNgBp_8Vy6p_MAlgkiKveOR6qH_ae4P9uGVRPNWl1-C1spuHRVdiR6Xx1XA3ec9T3785PNE1-yccgmMh35zHhruPX-YEk8jqTVQxLOvk4BwjxfMJNufIqzf65LX8SyguuPHW0lzWKWyYgst6LVqyYWN8iyKl_MLf1ojyrpF7cpW7eZ49d2B5iYjSyvyk6AQfZZDFJRSwOU5x8RaUObPSKrQktmouy-O-BX0bOp4mHt8tW879YH_RGC_crTBHtb2zaFtI2Ob9l3RncBZ4dSs-ikA/65a40bbf45a40/cd6dc7f9976142aaef402a9abeed6144ac9cf217997502374768b2851e4b7415/1080p/playlist.m3u8?vsid=b8b2959cb27270d32553f488c1cc0abc3e266c73a614xWEBx4863x1787997537&vpuid=5vmzdwr13w&source_index=0&session_data=1&force_m4s=1&preview=1&t=1787997537944",
+            // Diğer bölümleri bu şekilde ekleyebilirsiniz:
+            // "1_2": "https://...",
+            // "2_1": "https://..."
+        };
+
         const video = document.getElementById('player');
+        const mainTitle = document.getElementById('mainTitle');
+        const seasonButtonsArea = document.getElementById('seasonButtonsArea');
+        const backButtonArea = document.getElementById('backButtonArea');
+        const episodesWrapper = document.getElementById('episodesWrapper');
         const episodesContainer = document.getElementById('episodesContainer');
         const btnSeason1 = document.getElementById('btnSeason1');
         const btnSeason2 = document.getElementById('btnSeason2');
 
-        video.muted = false;
-        video.volume = 1.0;
+        let hls = null;
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    video.muted = true;
-                    video.play();
-                    
-                    const enableAudio = () => {
-                        video.muted = false;
-                        document.removeEventListener('click', enableAudio);
-                        document.removeEventListener('touchstart', enableAudio);
-                    };
-                    document.addEventListener('click', enableAudio);
-                    document.addEventListener('touchstart', enableAudio);
-                });
+        // Video Yükleme ve Oynatma Fonksiyonu (MP4 ve M3U8 desteği ile)
+        function loadVideoSource(url) {
+            if (hls) {
+                hls.destroy();
+                hls = null;
             }
+
+            if (url.includes('.m3u8')) {
+                if (Hls.isSupported()) {
+                    hls = new Hls();
+                    hls.loadSource(url);
+                    hls.attachMedia(video);
+                    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                        video.play().catch(() => {});
+                    });
+                } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                    video.src = url;
+                    video.play().catch(() => {});
+                }
+            } else {
+                video.src = url;
+                video.load();
+                video.play().catch(() => {});
+            }
+        }
+
+        // Açılış videosu
+        window.addEventListener('DOMContentLoaded', () => {
+            loadVideoSource(INTRO_VIDEO_URL);
         });
 
+        // Sezon Butonları
         function openSeason(seasonNumber) {
             btnSeason1.classList.toggle('active', seasonNumber === 1);
             btnSeason2.classList.toggle('active', seasonNumber === 2);
@@ -315,8 +354,38 @@
             }
         }
 
+        // Bölüm Başlatma Fonksiyonu
         function playEpisode(season, episode) {
-            console.log(`Sezon ${season}, Bölüm ${episode} seçildi.`);
+            const key = `${season}_${episode}`;
+            const videoUrl = episodesData[key];
+
+            // Başlığı güncelle
+            mainTitle.innerText = `${season}. SEZON ${episode}. BÖLÜM`;
+
+            // Butonları gizle, GERİ butonunu göster
+            seasonButtonsArea.style.display = 'none';
+            episodesWrapper.style.display = 'none';
+            backButtonArea.style.display = 'flex';
+
+            if (videoUrl) {
+                loadVideoSource(videoUrl);
+            } else {
+                alert(`${season}. Sezon ${episode}. Bölüm videosu henüz eklenmedi.`);
+            }
+        }
+
+        // Ana Sayfaya Geri Dön Fonksiyonu
+        function goBackToHome() {
+            // Başlığı eski haline getir
+            mainTitle.innerText = "WEDNESDAY";
+
+            // Sezon ve bölüm butonlarını geri getir, GERİ butonunu gizle
+            seasonButtonsArea.style.display = 'flex';
+            episodesWrapper.style.display = 'block';
+            backButtonArea.style.display = 'none';
+
+            // Giriş videosunu tekrar başlat
+            loadVideoSource(INTRO_VIDEO_URL);
         }
     </script>
 </body>
