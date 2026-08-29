@@ -25,16 +25,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 15px 60px;
+            padding: 60px 15px 40px; /* Başlığı aşağı almak için üst padding artırıldı */
         }
         
-        /* WEDNESDAY Başlığı */
+        /* WEDNESDAY Başlığı - Biraz aşağı çekildi */
         h1 {
             font-family: 'Cinzel Decorative', cursive;
             font-size: 4rem;
             color: #f3f4f6;
             text-shadow: 0 0 20px rgba(185, 28, 28, 0.7), 0 0 40px rgba(0, 0, 0, 0.95);
-            margin-bottom: 45px;
+            margin-top: 15px;
+            margin-bottom: 30px;
             letter-spacing: 6px;
             text-align: center;
         }
@@ -50,7 +51,7 @@
             border-radius: 14px;
             overflow: hidden;
             box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.9), 0 0 25px rgba(153, 27, 27, 0.25);
-            margin-bottom: 35px;
+            margin-bottom: 20px; /* Butonları yukarı çekmek için boşluk daraltıldı */
         }
 
         .video-box {
@@ -63,22 +64,22 @@
             display: block;
         }
 
-        /* Sezon Butonları */
+        /* Sezon Butonları - Yukarı yaklaştırıldı */
         .season-buttons {
             display: flex;
             gap: 20px;
             width: 100%;
             max-width: 950px;
             justify-content: center;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
         }
 
         /* Koyu Kırmızı / Kan Lekeli Buton Tasarımı */
         .blood-btn {
             position: relative;
             flex: 1;
-            padding: 18px 24px;
-            font-size: 1.25rem;
+            padding: 16px 20px;
+            font-size: 1.2rem;
             font-weight: 700;
             letter-spacing: 2px;
             color: #fce7f3;
@@ -92,7 +93,7 @@
             border: 1px solid rgba(239, 68, 68, 0.4);
             border-radius: 10px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), inset 0 0 15px rgba(0, 0, 0, 0.6);
             text-transform: uppercase;
             overflow: hidden;
@@ -111,31 +112,43 @@
             box-shadow: 0 0 30px rgba(239, 68, 68, 0.8), inset 0 0 15px rgba(0, 0, 0, 0.8);
         }
 
-        /* Bölüm Butonları Izgarası */
-        .episodes-container {
+        /* Bölüm Butonları Alanı - Sayfanın kaymasını önlemek için sabit yer tutucu */
+        .episodes-wrapper {
             width: 100%;
             max-width: 950px;
-            display: none;
+            min-height: 140px; /* Butonlar açıldığında sayfanın oynamasını engeller */
+        }
+
+        .episodes-container {
+            width: 100%;
+            display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
+            gap: 12px;
             background: rgba(15, 15, 20, 0.6);
-            padding: 25px;
+            padding: 20px;
             border-radius: 12px;
             border: 1px solid rgba(185, 28, 28, 0.25);
             backdrop-filter: blur(10px);
-            animation: fadeIn 0.4s ease forwards;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .episodes-container.visible {
+            opacity: 1;
+            visibility: visible;
         }
 
         .episode-btn {
-            padding: 14px 10px;
-            font-size: 0.95rem;
+            padding: 12px 10px;
+            font-size: 0.9rem;
             font-weight: 600;
             color: #fecaca;
             background: linear-gradient(145deg, rgba(69, 10, 10, 0.85), rgba(20, 5, 5, 0.95));
             border: 1px solid rgba(220, 38, 38, 0.35);
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
             text-align: center;
         }
 
@@ -144,18 +157,14 @@
             border-color: #f87171;
             box-shadow: 0 0 15px rgba(220, 38, 38, 0.5);
             color: #fff;
-            transform: scale(1.03);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            transform: scale(1.02);
         }
 
         @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; margin-bottom: 25px; }
+            h1 { font-size: 2.5rem; margin-bottom: 20px; }
             .season-buttons { flex-direction: column; }
             .episodes-container { grid-template-columns: repeat(2, 1fr); }
+            .episodes-wrapper { min-height: 240px; }
         }
     </style>
 </head>
@@ -178,17 +187,17 @@
         <button id="btnSeason2" class="blood-btn" onclick="openSeason(2)">2. SEZON</button>
     </div>
 
-    <!-- Dinamik Bölüm Butonları Alanı -->
-    <div id="episodesContainer" class="episodes-container"></div>
+    <!-- Sabit Bölüm Alanı -->
+    <div class="episodes-wrapper">
+        <div id="episodesContainer" class="episodes-container"></div>
+    </div>
 
     <script>
         const video = document.getElementById('player');
-        const source = document.getElementById('videoSource');
         const episodesContainer = document.getElementById('episodesContainer');
         const btnSeason1 = document.getElementById('btnSeason1');
         const btnSeason2 = document.getElementById('btnSeason2');
 
-        // Sesi açık olarak başlatma
         video.muted = false;
         video.volume = 1.0;
 
@@ -196,7 +205,6 @@
             const playPromise = video.play();
             if (playPromise !== undefined) {
                 playPromise.catch(() => {
-                    // Otomatik ses engellenirse sessiz başlatıp ilk etkileşimde sesi açar
                     video.muted = true;
                     video.play();
                     
@@ -211,13 +219,12 @@
             }
         });
 
-        // Sezon Butonları
         function openSeason(seasonNumber) {
             btnSeason1.classList.toggle('active', seasonNumber === 1);
             btnSeason2.classList.toggle('active', seasonNumber === 2);
 
             episodesContainer.innerHTML = '';
-            episodesContainer.style.display = 'grid';
+            episodesContainer.classList.add('visible');
 
             for (let i = 1; i <= 8; i++) {
                 const btn = document.createElement('button');
