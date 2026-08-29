@@ -14,15 +14,6 @@
 
         body {
             background-color: #070709;
-            /* El görseli biraz daha sağa (right 1%) ve daha aşağıya (72%) çekildi */
-            background-image: 
-                radial-gradient(circle at 92% 72%, rgba(0, 0, 0, 0.15) 0%, rgba(7, 7, 9, 0.85) 75%),
-                linear-gradient(to right, rgba(7, 7, 9, 0.9) 0%, rgba(7, 7, 9, 0.4) 60%, rgba(7, 7, 9, 0.2) 100%),
-                url('el.png');
-            background-position: right 1% 72%;
-            background-repeat: no-repeat;
-            background-size: contain;
-            background-attachment: fixed;
             color: #fff;
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
@@ -45,6 +36,20 @@
             letter-spacing: 6px;
             text-align: center;
             z-index: 3;
+        }
+
+        /* Sağ Alttaki Belirgin El Görseli */
+        .side-hand {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            width: 420px;
+            max-height: 550px;
+            object-fit: contain;
+            opacity: 0.85;
+            z-index: 1;
+            pointer-events: none;
+            filter: drop-shadow(0 0 25px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 15px rgba(185, 28, 28, 0.3));
         }
 
         /* Player Taşıyıcı Alanı */
@@ -203,6 +208,9 @@
                 width: 1150px;
                 opacity: 0.65;
             }
+            .side-hand {
+                width: 320px;
+            }
         }
 
         @media (max-width: 1024px) {
@@ -211,15 +219,19 @@
                 width: 750px;
                 opacity: 0.45;
             }
+            .side-hand {
+                width: 250px;
+                opacity: 0.6;
+            }
         }
 
         @media (max-width: 768px) {
             .huge-side-girl {
                 display: none;
             }
-            body {
-                background-position: center bottom;
-                background-size: 60%;
+            .side-hand {
+                width: 180px;
+                opacity: 0.5;
             }
             h1 { font-size: 2.3rem; margin-bottom: 15px; }
             .season-buttons { flex-direction: column; }
@@ -229,6 +241,9 @@
     </style>
 </head>
 <body>
+
+    <!-- Sağ Alttaki El Görseli -->
+    <img src="el.png" alt="Thing / El" class="side-hand">
 
     <h1>WEDNESDAY</h1>
 
