@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wednesday</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
-    <!-- HLS (.m3u8) video desteği için Hls.js -->
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -100,11 +98,14 @@
 
         .video-box {
             width: 100%;
+            aspect-ratio: 16 / 9;
             background: #000;
         }
 
-        video {
+        video, iframe {
             width: 100%;
+            height: 100%;
+            border: none;
             display: block;
         }
 
@@ -254,16 +255,14 @@
 
     <!-- Player ve Arkasındaki Karakterler -->
     <div class="stage-wrapper">
-        <!-- Sol Kız Görseli -->
         <img src="aaa26-08-29 041209.png" alt="Wednesday Detay" class="huge-side-girl">
-
-        <!-- Şeffaflaştırılmış Sağ El Görseli -->
         <img src="el.png" alt="Thing / El" class="huge-side-hand">
 
-        <!-- Video Player -->
+        <!-- Video Player Alanı -->
         <div class="main-container">
-            <div class="video-box">
+            <div class="video-box" id="playerWrapper">
                 <video id="player" controls autoplay playsinline preload="auto"></video>
+                <iframe id="iframePlayer" allowfullscreen style="display: none;"></iframe>
             </div>
         </div>
     </div>
@@ -274,7 +273,7 @@
         <button id="btnSeason2" class="blood-btn" onclick="openSeason(2)">2. SEZON</button>
     </div>
 
-    <!-- Geri Dön Butonu (Bölüm Seçildiğinde Açılır) -->
+    <!-- Geri Dön Butonu -->
     <div id="backButtonArea" class="back-btn-container" style="display: none;">
         <button class="blood-btn back-btn" onclick="goBackToHome()">← GERİ DÖN (ANA SAYFA)</button>
     </div>
@@ -285,21 +284,30 @@
     </div>
 
     <script>
-        // Giriş videosu doğrudan repodaki giris.dat dosyasından okunuyor
         const INTRO_FILE_URL = "giris.dat";
 
-        // BÖLÜM VİDEO LİNKLERİ LİSTESİ
+        // BÖLÜM STREAMTAPE EMBED LİNKLERİ LİSTESİ
         const episodesData = {
-            "1_1": "https://streaming.disk.yandex.net/hls/U2FsdGVkX1_0oJ-xckI5mjKkHnICe9CnEcY0b2POwkyRb5BEh2NNPib1refHd8MCYTxF6N5C1Um_NUiOqf6v1aBUTc3FfnF24OZuyi85O7eQlWJLb8tdvNo2ol0fCV0uj4icobxSdaEk3x_AoNJ8fspGWzA5bmrtJA51aBk46ALxJuV5IzLHK8TmbsYZmTyaTXwfvk1q0gpGV7UzcXCbbKguXMp3ykEDqyICP9qlVuUsF1V5eOj3z83x3M4Bz_zA08eDfs1WFjY2IR6M9U0bHHIAuz_6hkFXDt6rYC75ZUO_P_EOJMNsi5PNFzkwDzmr6FgTQDZAsOLUQK6Fg3np_tAFQJy7Ko9RY6869dzSh7c/65a40ecadf858/10f573ee9cd57b975d48a25e2e897083ec87549384e65a7fccfb3ffb11678c95/720p/playlist.m3u8?vsid=c469300a41daa5cc07b34ee0febd356e8068f4c79e7cxWEBx4863x1787998353&vpuid=5vmzdwr13w&source_index=0&t=1787998354091&abd=1",
-            "1_2": "https://streaming.disk.yandex.net/hls/U2FsdGVkX1-kUqVJgawCajhB_Int2ezi3GnvmRNm90FLk_OSMCmV1mXmkIcDqH57IXM8n5u--K2f-ElFVoxHEI_RgICqclHWx7PAqXEEAj2PhqrQ33D5beEElegA43kKKMyKmZi-fpAFURpIE-3xR-AvK7R4Ws3GO5H7PF1t1-U4Q00Mf74Tb_lDhmJO3zZYMTIX_Pk8Q7l67jnh_tPSFgXN7pO134lzT_4AzBMAIgIj-2o7CxLOkcuRNgveXZzgZUEgSA2QVj2ZHw4aykP3cVdYp6q0mywyag6sCBsCpGofrpp7RPhwwP802QFPGCJsvlld4CN-Gahy6g3OPtWuA802XAru3n1Uep1VargYhW4/65a424921a4f8/b77aa969ab1c3c242047661d7a139834aab0ac12c9eafbc26ea330f4a0049b40/720p/playlist.m3u8?vsid=19e1ec521681a808d479e4f9ef1563447056710bcd50xWEBx4863x1788004199&vpuid=5vmzdwr13w&source_index=0&t=1788004199629&abd=1",
-            "1_3": "https://streaming.disk.yandex.net/hls/U2FsdGVkX181nTmVzpW5KGTEG1UE-vVS3WxKyD10L16Pxs1gKemQ-S96ZEkcqfvnS3j07RDbXzHY93VdMoec1Mq74LCEI7S-zf3YrX9dPqJqo1yEOspUtlO5ruBvxlQ3yFAvgYRD6WShLbbJCfV45u3xomzQy01pMgpUk881nUSS2MjLW2wQ1WehiZXYXSXCTldXmYsSNsVQ5r8_hBhm2Sv1QGiuc_KWoNtQ76etC8r9yyVfe26PRH04T8_TFw3LfADVNUscca02owk4I6IkCb8YJW8LRB0HJyT5YDocRRcbiCY1pNLsh5XLT3xJbcyIGYXPuw-d9ulHEqJOqmANrlDPiPS89MiN-QOX7XCvMRc/65a4323273e38/a2f3045cbff78182d1569ccf5d7a025548644bf09f94ef3cfb57ed93c119e980/720p/playlist.m3u8?vsid=d07ae42ebe704b1ae02af0963fec0f8e8bbe46e0306dxWEBx4863x1788007857&vpuid=5vmzdwr13w&source_index=0&session_data=1&force_m4s=1&preview=1&t=1788007857467",
-            "1_4": "https://streaming.disk.yandex.net/hls/U2FsdGVkX1-_4UnDcRZ-q7ILacA_bz3omnjJwWLNtbR1oaqZgje7hkFSEh3K4bEO_ZUi77W5peZUvPB7N8fG-wSxsQpdSwskpI3h6OFcvHaInkiwEhvc_-seQa-Mm6NVRlscHlIKdyoarECMYYQyTdc5JBIFNdvrTeEc946UfeiHudHCxzx_Bk17hgASf6_SaJWyfNkFfFqN6T2as0ogLBMDOMh8-nLxNfWIREBCVsrgc5PMTJctSlSH52mWPUHIAfpR20sc2OMrcqzMk3OVSrm0SZKODs1opfPBG6Rlo0oTHvULQfh72vE6U5vE6eLv2LUFWd9eO1pGp5FzjOBNPGrfYj44N9GcZgNgQ5e6nYk/65a443e257c80/535226ce1fa32658f35bd5f27d4035dfc4932143487220c9bd797e9780a47b30/720p/playlist.m3u8?vsid=e15e42e751e05c98bf461c984fe2ac22cf4683de3a02xWEBx4863x1788012607&vpuid=5vmzdwr13w&source_index=0&t=1788012607354&abd=1",
-            "1_5": "https://streaming.disk.yandex.net/hls/U2FsdGVkX1-_O1cedLMp1jz9BYfmOUunxYP3kBwLqfca_tMG6y36uOLfTVcpB7Kup4o4_2yEcWjrCehxhtq31z5baTramg6qHYNxuw01LK9dM--cH2r34e3T9nmz3cbXiIhNtPFPy4I-TqVlsV5dYN-NKKNle5qEp1x9tW-VzIWlZOOnNlnCfg_TJ2tciu1UeHvJhBmLZmSk6c4Hxsi2neFJTrzuxXGXh904euli1x3g5jybh_4GKZkQpzUMNkHeGVTjQtUBtaAJr9hxi-g-rl3vVOh109sJBXaAlOX3LWiCaGw2l6bw10IvlSJLcSUFnCKdiXxEIFpliD9BRLOFjgWmw8MjS3NyrQPstdAePKo/65a45066f4e28/bd0693226a18e53bbec3a813a289f00ba5ba1bcd3cce7eb215da64e23143dc79/720p/playlist.m3u8?vsid=1c8413b77ee5dac3d58953164216f2f9799ddb22f33bxWEBx4863x1788015968&vpuid=5vmzdwr13w&source_index=0&t=1788015968166&abd=1",
-            "1_6": "https://streaming.disk.yandex.net/hls/U2FsdGVkX1-CxSpNriLUy0x0EF_ykLU5bU8vyIcls-GGLdlNJvCvzjiylKmrxIP3Y4AOHBtpdnPZoJ-lV_bHV2fGf_c6SyCJX_1tb1uhK3GdKeiWJbE3AZKNFIAG8fzCH7DSHaEd6n5y2pcLEv6ul_LDDXmRFy0on5H9QaCsVGJ7i8YyjOID5SS4RzU9lZumla5zzUma7BFImHiSZBmY93jeyQBQ4x2RsQfPNoNIcjKwHl5eZxRP0uskb9osv8lbia7xiP5x9OSneIoj9fKFj0D-DRPpqQyYezjobTh22Yv6_Z7zf94G_6yvIXTHZDwvxNN-xX30u8PF3hIMYWLK1Q/65a4adb1cfdf0/735702143323c2fffcbc55ca671e229db71be3f1d0a921a3ea241189c2d6b939/720p/playlist.m3u8?tid=3&vsid=0a6e39326da8fc8e6801376cb311beae54a9b82fa888xWEBx4863x1788041010&vpuid=5vmzdwr13w&source_index=0&t=1788041011296&abd=1",
-            "1_7": "https://streaming.disk.yandex.net/hls/U2FsdGVkX1_Nw3OiaRsovhyVdUO7_3lFSMuorHblbl7tp5a419aBxI31-mWhRddboJSrZ_Yj1MqEm6dL8SLFTkq-ouJBYPjDzdr9rOg7r6qJxRkE8cshVwemzRNpaRXZjJLl-uxzr-X70J11T6ErglzHWgAhZbpxj31dGBmuW3Ho_sUbIdnpRifr9-IWPQaPBPurBmIcSxxNgZS4eMlTj6n4AsN9pH76bX_JUGmBSEufyeQgcZcLk3ttl1j2DzbfDXfNj44PGX4H25C9-lUH2dOwSMyJUBgLRT7UHTp8d9EQ5ZrrjOsHvy7SLtB6kh-olHFVNPuIsVStp2H7zvAFbagM6wbuCwPtsvkVp0ViOlY/65a4adb1fefd8/8b00a07f62aa5cb7c6ecdcc2a2511869833a372afa4428b5c6646e3ebbdceebe/720p/playlist.m3u8?tid=3&vsid=7a4772fb6a3d35d3ccb7c3a605fbb4f5acf17ef38697xWEBx4863x1788041095&vpuid=5vmzdwr13w&source_index=0&t=1788041095450&abd=1"
+            "1_1": "",
+            "1_2": "https://streamtape.com/e/96Oe6lRG0QSaGaV/Wd1.2coolstyle.mp4",
+            "1_3": "",
+            "1_4": "",
+            "1_5": "",
+            "1_6": "",
+            "1_7": "",
+            "1_8": "",
+            "2_1": "",
+            "2_2": "",
+            "2_3": "",
+            "2_4": "",
+            "2_5": "",
+            "2_6": "",
+            "2_7": "",
+            "2_8": ""
         };
 
         const video = document.getElementById('player');
+        const iframePlayer = document.getElementById('iframePlayer');
         const mainTitle = document.getElementById('mainTitle');
         const seasonButtonsArea = document.getElementById('seasonButtonsArea');
         const backButtonArea = document.getElementById('backButtonArea');
@@ -308,47 +316,23 @@
         const btnSeason1 = document.getElementById('btnSeason1');
         const btnSeason2 = document.getElementById('btnSeason2');
 
-        let hls = null;
-
-        // .dat dosyasını tarayıcı hafızasına (Blob) alıp IDM'den gizleyerek oynatan fonksiyon
+        // Giriş videosunu (.dat) tarayıcı hafızasına alıp oynatır
         function playBlobIntro(fileUrl) {
-            if (hls) {
-                hls.destroy();
-                hls = null;
-            }
+            iframePlayer.src = "";
+            iframePlayer.style.display = "none";
+            video.style.display = "block";
 
             fetch(fileUrl)
                 .then(res => res.arrayBuffer())
                 .then(buffer => {
                     const blob = new Blob([buffer], { type: 'video/mp4' });
-                    const blobUrl = URL.createObjectURL(blob);
-                    video.src = blobUrl;
+                    video.src = URL.createObjectURL(blob);
                     video.play().catch(() => {});
                 })
-                .catch(err => console.error("Video okunamadı:", err));
+                .catch(err => console.error("Giriş videosu okunamadı:", err));
         }
 
-        // HLS (.m3u8) Bölüm Oynatma Fonksiyonu
-        function loadHlsVideo(url) {
-            if (hls) {
-                hls.destroy();
-                hls = null;
-            }
-
-            if (Hls.isSupported()) {
-                hls = new Hls();
-                hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    video.play().catch(() => {});
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = url;
-                video.play().catch(() => {});
-            }
-        }
-
-        // Sayfa açıldığında Blob formatında giriş videosunu başlat
+        // Sayfa açıldığında giriş videosunu başlat
         window.addEventListener('DOMContentLoaded', () => {
             playBlobIntro(INTRO_FILE_URL);
         });
@@ -375,23 +359,28 @@
             const key = `${season}_${episode}`;
             const videoUrl = episodesData[key];
 
-            mainTitle.innerText = `${season}. SEZON ${episode}. BÖLÜM`;
+            if (!videoUrl) {
+                alert(`${season}. Sezon ${episode}. Bölüm videosu henüz eklenmedi.`);
+                return;
+            }
 
+            mainTitle.innerText = `${season}. SEZON ${episode}. BÖLÜM`;
             seasonButtonsArea.style.display = 'none';
             episodesWrapper.style.display = 'none';
             backButtonArea.style.display = 'flex';
 
-            if (videoUrl) {
-                loadHlsVideo(videoUrl);
-            } else {
-                alert(`${season}. Sezon ${episode}. Bölüm videosu henüz eklenmedi.`);
-            }
+            // Giriş videosunu durdur ve gizle, iframe'i başlat
+            video.pause();
+            video.src = "";
+            video.style.display = "none";
+
+            iframePlayer.style.display = "block";
+            iframePlayer.src = videoUrl;
         }
 
         // Ana Sayfaya Geri Dön Fonksiyonu
         function goBackToHome() {
             mainTitle.innerText = "WEDNESDAY";
-
             seasonButtonsArea.style.display = 'flex';
             episodesWrapper.style.display = 'block';
             backButtonArea.style.display = 'none';
