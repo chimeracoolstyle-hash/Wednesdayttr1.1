@@ -262,7 +262,7 @@
         <div class="main-container">
             <div class="video-box" id="playerWrapper">
                 <video id="player" controls autoplay playsinline preload="auto"></video>
-                <iframe id="iframePlayer" allowfullscreen style="display: none;"></iframe>
+                <iframe id="iframePlayer" allow="autoplay; fullscreen" allowfullscreen style="display: none;"></iframe>
             </div>
         </div>
     </div>
@@ -286,16 +286,16 @@
     <script>
         const INTRO_FILE_URL = "giris.dat";
 
-        // BÖLÜM STREAMTAPE EMBED LİNKLERİ LİSTESİ
+        // BÖLÜM STREAM LİNKLERİ (OK.ru)
         const episodesData = {
-            "1_1": "",
-            "1_2": "https://streamtape.com/e/96Oe6lRG0QSaGaV/Wd1.2coolstyle.mp4",
-            "1_3": "",
-            "1_4": "",
-            "1_5": "",
-            "1_6": "",
-            "1_7": "",
-            "1_8": "",
+            "1_1": "https://ok.ru/videoembed/18192722233906?nochat=1",
+            "1_2": "https://ok.ru/videoembed/18192559376946?nochat=1",
+            "1_3": "https://ok.ru/videoembed/18192731474482?nochat=1",
+            "1_4": "https://ok.ru/videoembed/18192732326450?nochat=1",
+            "1_5": "https://ok.ru/videoembed/18192733702706?nochat=1",
+            "1_6": "https://ok.ru/videoembed/18192738028082?nochat=1",
+            "1_7": "https://ok.ru/videoembed/18192738945586?nochat=1",
+            "1_8": "https://ok.ru/videoembed/18192739994162?nochat=1",
             "2_1": "",
             "2_2": "",
             "2_3": "",
@@ -316,7 +316,7 @@
         const btnSeason1 = document.getElementById('btnSeason1');
         const btnSeason2 = document.getElementById('btnSeason2');
 
-        // Giriş videosunu (.dat) tarayıcı hafızasına alıp oynatır
+        // Giriş videosunu (.dat) hafızadan oynatır
         function playBlobIntro(fileUrl) {
             iframePlayer.src = "";
             iframePlayer.style.display = "none";
@@ -369,7 +369,7 @@
             episodesWrapper.style.display = 'none';
             backButtonArea.style.display = 'flex';
 
-            // Giriş videosunu durdur ve gizle, iframe'i başlat
+            // Giriş videosunu durdur ve OK.ru oynatıcısını aç
             video.pause();
             video.src = "";
             video.style.display = "none";
